@@ -16,3 +16,23 @@ function buycake(){
         info: "First redux action"
     }
 }
+
+//--> Reducers are the function which accepts state and action as an argument and returns the next state of the application 
+//--->   (previousState , action) => newState
+
+//----------> Initial State <--------------
+const initialState = {
+    numofCakes: 10
+}   
+
+const reducer = (state = initialState, action)=>{
+
+    switch(action.type)
+    {
+        case BUY_CAKE: return{
+            numofCakes: state.numofCakes - 1
+        }
+
+        default: return state
+    }
+}
