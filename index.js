@@ -1,5 +1,6 @@
 const redux = require('redux');  
 const createStore = redux.legacy_createStore;
+const combineReducers = redux.combineReducers;
 
 const BUY_CAKE = 'BUY_CAKE';
 const BUY_ICECREAM = 'BUY_ICECREAM';
@@ -29,25 +30,59 @@ function buyicecream(){
 }
 
 //--> Reducers are the function which accepts state and action as an argument and returns the next state of the application 
+
 //--->   (previousState , action) => newState
 
 //----------> Initial State <--------------
-const initialState = {
-    numofCakes: 10,
-    numofIceCreams: 10
-}   
 
-const reducer = (state = initialState, action)=>{
+// const initialState = {
+//     numofCakes: 10,
+//     numofIceCreams: 10
+// }   
+
+const initialCakeState = {
+    numofCakes: 10
+} 
+
+const initialIceCreamState = {
+    numofIceCreams: 10
+} 
+
+// const reducer = (state = initialState, action)=>{
+
+//     switch(action.type)
+//     {
+//         case BUY_CAKE: return{
+//             numofCakes: state.numofCakes - 1,
+//             numofIceCreams: state.numofIceCreams
+//         }
+
+//         case BUY_ICECREAM: return{
+//             numofCakes: state.numofCakes - 1,
+//             numofIceCreams: state.numofIceCreams - 1
+//         }
+
+//         default: return state
+//     }
+// }
+
+const cakeReducer = (state = initialCakeState, action)=>{
 
     switch(action.type)
     {
         case BUY_CAKE: return{
             numofCakes: state.numofCakes - 1,
-            numofIceCreams: state.numofIceCreams
         }
 
+        default: return state
+    }
+}
+
+const iceCreamReducer = (state = initialIceCreamState, action)=>{
+
+    switch(action.type)
+    {
         case BUY_ICECREAM: return{
-            numofCakes: state.numofCakes - 1,
             numofIceCreams: state.numofIceCreams - 1
         }
 
@@ -61,7 +96,12 @@ const reducer = (state = initialState, action)=>{
 //iii)Allows state to be updated via dispatch(action)
 //iv)Registers listeners via subscribe(listener) 
 
-const store = createStore(reducer);
+const rootReducer = combineReducers({
+    cake: cakeReducer,
+    iceCream: iceCreamReducer
+})
+
+const store = createStore(rootReducer); //-------> accepts only one reducer as an argument
 console.log("Initial state", store.getState());
 const unsubscribe = store.subscribe(()=>console.log("Updated state", store.getState()));
 store.dispatch(buycake());
