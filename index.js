@@ -1,6 +1,10 @@
 const redux = require('redux');  
+const reduxLogger = require("redux-logger");
+
 const createStore = redux.legacy_createStore;
 const combineReducers = redux.combineReducers;
+const applyMiddleware = redux.applyMiddleware;
+const logger = reduxLogger.createLogger();
 
 const BUY_CAKE = 'BUY_CAKE';
 const BUY_ICECREAM = 'BUY_ICECREAM';
@@ -101,9 +105,9 @@ const rootReducer = combineReducers({
     iceCream: iceCreamReducer
 })
 
-const store = createStore(rootReducer); //-------> accepts only one reducer as an argument
+const store = createStore(rootReducer , applyMiddleware(logger)); //-------> accepts only one reducer as an argument
 console.log("Initial state", store.getState());
-const unsubscribe = store.subscribe(()=>console.log("Updated state", store.getState()));
+const unsubscribe = store.subscribe(()=>{});
 store.dispatch(buycake());
 store.dispatch(buycake());
 store.dispatch(buycake());
